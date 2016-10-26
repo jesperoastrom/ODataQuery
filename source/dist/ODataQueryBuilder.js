@@ -47,7 +47,7 @@
 	module.exports = {
 	    //entry: './ODataQueryBuilder.ts',
 	    output: {
-	        filename: './dist/ODataQueryBuilder.js'
+	        filename: './dist/ODataQuery.js'
 	    },
 	    resolve: {
 	        extensions: ['.ts', '.js', '']

@@ -1,8 +1,8 @@
 {
-  "name": "odataquerybuilder",
+  "name": "odataquery",
   "version": "1.0.0",
   "description": "",
-  "main": "ODataQueryBuilder.ts",
+  "main": "ODataQuery.ts",
   "scripts": {
     "build": "webpack ./config/webpack.config",
     "test": "karma start ./config/karma.config --log-level debug"
