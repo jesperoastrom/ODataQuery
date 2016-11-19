@@ -1,29 +1,18 @@
+import { DefaultExpressionParser } from './parsing/DefaultExpressionParser';
+import { IExpressionParser } from './parsing/IExpressionParser';
+import { IQueryExpression } from './parsing/IQueryExpression';
+
 export class ODataQuery<T> {
-    top(n: number) {
-
+    constructor(private _expressionParser: IExpressionParser = new DefaultExpressionParser) {
     }
+
+    // top(n: number) {
+    // }
+
     orderBy(expression: (item: T) => void) {
-
+        let queryExpression = this._expressionParser.parseExpression(expression);
     }
 
-    orderByDesc(...fields: string[]) {
-    }
-
-    private parseExpression(expression: (item: T) => void): QueryExpression {
-        const matchExpression: RegExp = /^\s*function\s*\((\w*)\)\s*{\s*return\s?(.*);\s*}\s*$/g;
-        let actionString = expression.toString();
-        let match = matchExpression.exec(actionString);
-        if (match && match.length === 3) {
-            return {
-                parameterName: match[1],
-                statement: match[2]
-            };
-        }
-        throw new Error(`Unable to understand expression: ${actionString}`);
-    }
-}
-
-interface QueryExpression {
-    parameterName: string;
-    statement: string;
+    // orderByDesc(...fields: string[]) {
+    // }
 }
