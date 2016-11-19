@@ -1,40 +1,41 @@
 import { OrderByOption } from './options/OrderByOption';
-import { IOption } from './options/IOption';
-import { DefaultExpressionParser } from './parsing/DefaultExpressionParser';
-import { IExpressionParser } from './parsing/IExpressionParser';
+import { DefaultPredicateParser } from './parsing/DefaultPredicateParser';
+import { IPredicateParser } from './parsing/IPredicateParser';
 
 export class ODataQuery<T> {
 
-    private _options: IOption[] = [];
+    private _orderBy: OrderByOption;
 
-    constructor(private _expressionParser: IExpressionParser = new DefaultExpressionParser) {
+    constructor(private _predicateParser: IPredicateParser = new DefaultPredicateParser) {
     }
 
-    // top(n: number) {
-    // }
-
-    orderBy(expression: (item: T) => void): ODataQuery<T> {
-        let queryExpression = this._expressionParser.parseExpression(expression);
-        this._options.push(new OrderByOption(queryExpression));
+    orderBy(predicate: (item: T) => void): ODataQuery<T> {
+        let expression = this._predicateParser.parsePredicate(predicate);
+        this._orderBy = this._orderBy || new OrderByOption();
+        this._orderBy.addExpression(expression, true);
         return this;
     }
 
-    // orderByDesc(...fields: string[]) {
-    // }
+    orderByDesc(predicate: (item: T) => void): ODataQuery<T> {
+        let expression = this._predicateParser.parsePredicate(predicate);
+        this._orderBy = this._orderBy || new OrderByOption();
+        this._orderBy.addExpression(expression, false);
+        return this;
+    }
 
     toString(): string {
-        if (this._options.length > 0) {
-            return "$" + this.buildOptions();
+        if (this._orderBy) {
+            return "$" + this._orderBy.getQuery();
         }
         return "";
     }
 
-    private buildOptions(): string {
-        let s = "";
-        for(let i = 0; i < this._options.length; i++) {
-            let option = this._options[i];
-            s += option.getQuery();
-        }
-        return s;
-    }
+    // private buildOptions(): string {
+    //     let s = "";
+    //     for(let i = 0; i < this._options.length; i++) {
+    //         let option = this._options[i];
+    //         s += option.getQuery();
+    //     }
+    //     return s;
+    // }
 }

@@ -11,14 +11,23 @@ describe('ODataQuery', () => {
         expect(query
             .orderBy(person => person.name)
             .toString())
-        .toBe('$orderby=name');
+            .toBe('$orderby=name');
     });
 
     it('can order by complex property', () => {
         expect(query
             .orderBy(person => person.mother.name)
             .toString())
-        .toBe('$orderby=mother/name');
+            .toBe('$orderby=mother/name');
+    });
+
+    it('can order by multiple properties', () => {
+        expect(query
+            .orderBy(person => person.name)
+            .orderByDesc(person => person.father.name)
+            .orderBy(person => person.age)
+            .toString())
+            .toBe('$orderby=name,father/name desc,age');
     });
 });
 
