@@ -5,7 +5,8 @@
   "main": "ODataQuery.ts",
   "scripts": {
     "build": "webpack ./config/webpack.config",
-    "test": "karma start ./config/karma.config --log-level debug"
+    "test": "karma start ./config/karma.config --log-level debug",
+    "test-ci": "karma start ./config/karma.ci.config --log-level debug"
   },
   "author": "",
   "license": "ISC",
