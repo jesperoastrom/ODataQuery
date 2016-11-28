@@ -1,4 +1,5 @@
 import { ODataQuery } from '../ODataQuery';
+import { Person } from './ODataQuery.models.spec';
 
 describe('ODataQuery', () => {
     let query: ODataQuery<Person>;
@@ -30,10 +31,3 @@ describe('ODataQuery', () => {
             .toBe('$orderby=name,father/name desc,age');
     });
 });
-
-interface Person {
-    name: string;
-    age: number;
-    mother: Person;
-    father: Person;
-}
