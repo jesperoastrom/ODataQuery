@@ -1,4 +1,5 @@
 import { OrderByOption } from './options/OrderByOption';
+import { SkipOption } from './options/SkipOption';
 import { TopOption } from './options/TopOption';
 import { DefaultPredicateParser } from './parsing/DefaultPredicateParser';
 import { IPredicateParser } from './parsing/IPredicateParser';
@@ -6,6 +7,7 @@ import { IPredicateParser } from './parsing/IPredicateParser';
 export class ODataQuery<T> {
 
     private _orderBy: OrderByOption;
+    private _skip: SkipOption;
     private _top: TopOption;
 
     constructor(private _predicateParser: IPredicateParser = new DefaultPredicateParser) {
@@ -25,6 +27,11 @@ export class ODataQuery<T> {
         return this;
     }
 
+    skip(n: number): ODataQuery<T> {
+        this._skip = new SkipOption(n);
+        return this;
+    }
+
     top(n: number): ODataQuery<T> {
         this._top = new TopOption(n);
         return this;
@@ -35,9 +42,15 @@ export class ODataQuery<T> {
         if (this._orderBy) {
             queryParts.push(this._orderBy.getQuery());
         }
+
+        if (this._skip) {
+            queryParts.push(this._skip.getQuery());
+        }
+
         if (this._top) {
             queryParts.push(this._top.getQuery());
         }
+
         if(queryParts.length == 0) {
             return '';
         }
